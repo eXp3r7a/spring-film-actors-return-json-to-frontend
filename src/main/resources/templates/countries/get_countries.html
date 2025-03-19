@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Country Table</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<header th:insert="header.html :: header"></header>
+<table>
+    <tr>
+        <th>Country ID</th>
+        <th>Country name</th>
+        <th>Number of citizens</th>
+    </tr>
+    <th:block th:each="country: ${countries}">
+        <tr>
+            <td th:text="${country.country_id}">countryId</td>
+            <td th:text="${country.name}">name</td>
+            <td th:text="${country.numberOfCitizens}">citizens</td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

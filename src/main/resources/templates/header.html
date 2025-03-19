@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="header" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/films/add}" sec:authorize="isAuthenticated()">Film
+                        add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/films/get}">Film List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/actors/add}" sec:authorize="hasRole('ROLE_ADMIN')">Actor add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/actors/get}" sec:authorize="hasRole('ROLE_ADMIN')">Actor List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/countries/add}" sec:authorize="hasRole('ADMIN')">Country add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/countries/get}" sec:authorize="hasRole('ADMIN')">Country List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}" sec:authorize="isAuthenticated()">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
