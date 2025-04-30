@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ActorDTO {
 
@@ -27,6 +29,16 @@ public class ActorDTO {
 
     @NotNull
     private String gender;
+
+    private List<Country> countries;
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
 
     public String getName() {
         return name;

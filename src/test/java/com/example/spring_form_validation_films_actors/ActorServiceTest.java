@@ -1,6 +1,7 @@
 package com.example.spring_form_validation_films_actors;
 
 import com.example.spring_form_validation_films_actors.dto.ActorDTO;
+import com.example.spring_form_validation_films_actors.dto.ResponseMessage;
 import com.example.spring_form_validation_films_actors.entities.Actor;
 import com.example.spring_form_validation_films_actors.entities.Country;
 import com.example.spring_form_validation_films_actors.services.ActorService;
@@ -55,6 +56,8 @@ public class ActorServiceTest {
     @Test
     void testSubmitActorWhenValid(){
         //GIVEN
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setMessage("Successfully saved!");
         when(bindingResult.hasErrors()).thenReturn(false);
         ActorDTO actorDTO = new ActorDTO();
         Actor actor = new Actor();
@@ -66,12 +69,12 @@ public class ActorServiceTest {
         when(countryRepository.findById(country.getCountry_id())).thenReturn(Optional.of(country));
 
         //WHEN
-        String viewName = actorService.submitActorToDB(actorDTO,bindingResult, model);
+        ResponseMessage viewName = actorService.submitActorToDB(actorDTO,bindingResult, model);
 
         //THEN
         verify(model, never()).addAttribute(anyString(), any());
         verify(actorRepository, times(1)).save(actor);
-        Assertions.assertEquals("redirect:/results", viewName);
+        Assertions.assertEquals(responseMessage, viewName);
     }
 
 }

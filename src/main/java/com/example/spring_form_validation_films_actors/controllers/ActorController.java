@@ -1,7 +1,11 @@
 package com.example.spring_form_validation_films_actors.controllers;
 
 import com.example.spring_form_validation_films_actors.dto.ActorDTO;
+import com.example.spring_form_validation_films_actors.dto.ResponseMessage;
+import com.example.spring_form_validation_films_actors.entities.Actor;
+import com.example.spring_form_validation_films_actors.entities.Country;
 import com.example.spring_form_validation_films_actors.services.ActorService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -10,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/actors")
 public class ActorController implements WebMvcConfigurer {
 
@@ -29,17 +36,17 @@ public class ActorController implements WebMvcConfigurer {
     }
 
     @GetMapping("/add")
-    public String addActorForm(Model model){
-        return actorService.addActorForm(model);
+    public ActorDTO addActorForm() {
+        return actorService.addActorForm();
     }
 
     @PostMapping("/submit")
-    public String submitActorToDB(@Valid ActorDTO actorDto, BindingResult bindingResult, Model model){
+    public ResponseMessage submitActorToDB(@Valid ActorDTO actorDto, BindingResult bindingResult, Model model){
         return actorService.submitActorToDB(actorDto, bindingResult, model);
     }
 
     @GetMapping("/get")
-    public String getAllActors(Model model){
-        return actorService.getAllActors(model);
+    public List<Actor> getAllActors(){
+        return actorService.getAllActors();
     }
 }

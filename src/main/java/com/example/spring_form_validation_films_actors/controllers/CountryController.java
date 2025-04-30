@@ -1,5 +1,6 @@
 package com.example.spring_form_validation_films_actors.controllers;
 
+import com.example.spring_form_validation_films_actors.dto.ResponseMessage;
 import com.example.spring_form_validation_films_actors.entities.Country;
 import com.example.spring_form_validation_films_actors.repositories.CountryRepository;
 import jakarta.validation.Valid;
@@ -11,7 +12,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import org.springframework.ui.Model;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/countries")
 public class CountryController implements WebMvcConfigurer {
 
@@ -27,26 +30,24 @@ public class CountryController implements WebMvcConfigurer {
     }
 
     @GetMapping("/add")
-    public String addCountryForm(Model model){
-        model.addAttribute("country", new Country());
-
-        return "countries/add_form";
+    public Country addCountryForm(){
+        return new Country();
     }
 
     @PostMapping("/submit")
-    public String submitCountryToDB(@ModelAttribute @Valid Country country, BindingResult bindingResult){
+    public ResponseMessage submitCountryToDB(@ModelAttribute @Valid Country country, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "countries/add_form";
+            addCountryForm();
         }
 
         countryRepository.save(country);
-        return "redirect:/results";
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setMessage("Country is successfully added!");
+        return responseMessage;
     }
 
     @GetMapping("/get")
-    public String getAllCountries(Model model){
-        model.addAttribute("countries", countryRepository.findAll());
-
-        return "countries/get_countries";
+    public List<Country> getAllCountries(Model model){
+        return countryRepository.findAll();
     }
 }

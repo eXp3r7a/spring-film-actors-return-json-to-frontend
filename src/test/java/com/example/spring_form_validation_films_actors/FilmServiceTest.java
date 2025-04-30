@@ -43,7 +43,7 @@ public class FilmServiceTest {
         FilmDTO filmDTO = new FilmDTO();
 
         //WHEN
-        filmService.submitFilmToDB(filmDTO,bindingResult,model);
+        filmService.submitFilmToDB(filmDTO,bindingResult);
 
         //THEN
         verify(model, times(2)).addAttribute(anyString(), any());
@@ -58,7 +58,7 @@ public class FilmServiceTest {
         FilmDTO filmDTO = new FilmDTO();
 
         //WHEN
-        filmService.submitFilmToDB(filmDTO,bindingResult,model);
+        filmService.submitFilmToDB(filmDTO,bindingResult);
 
         //THEN
         verify(model, never()).addAttribute(any());

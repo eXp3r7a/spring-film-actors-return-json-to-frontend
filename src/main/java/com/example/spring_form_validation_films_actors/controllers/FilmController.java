@@ -1,6 +1,8 @@
 package com.example.spring_form_validation_films_actors.controllers;
 
 import com.example.spring_form_validation_films_actors.dto.FilmDTO;
+import com.example.spring_form_validation_films_actors.dto.ResponseMessage;
+import com.example.spring_form_validation_films_actors.entities.Film;
 import com.example.spring_form_validation_films_actors.services.FilmService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/films")
 public class FilmController implements WebMvcConfigurer {
 
@@ -27,18 +31,18 @@ public class FilmController implements WebMvcConfigurer {
     }
 
     @GetMapping("/add")
-    public String addFilmForm(Model model){
-        return filmService.addFilmForm(model);
+    public FilmDTO addFilmForm(){
+        return filmService.addFilmForm();
     }
 
     @PostMapping("/submit")
-    public String submitFilmToDB(@ModelAttribute @Valid FilmDTO filmDTO, BindingResult bindingResult, Model model){
-        return filmService.submitFilmToDB(filmDTO, bindingResult, model);
+    public ResponseMessage submitFilmToDB(@ModelAttribute @Valid FilmDTO filmDTO, BindingResult bindingResult){
+        return filmService.submitFilmToDB(filmDTO, bindingResult);
     }
 
     @GetMapping("/get")
-    public String getAllFilms(Model model){
-        return filmService.getAllFilms(model);
+    public List<Film> getAllFilms(){
+        return filmService.getAllFilms();
     }
 
 }

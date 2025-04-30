@@ -27,6 +27,8 @@ public class FilmDTO {
     @Min(1900)
     private int publishedYear;
 
+    private List<Actor> allActorsList;
+
     @NotNull
     @ManyToMany
     @JoinTable(
@@ -36,6 +38,14 @@ public class FilmDTO {
     )
     @Size(min = 1, max = 4, message = "You must select between 1 and 4 actors.")
     private List<Actor> actors = new ArrayList<>();
+
+    public List<Actor> getAllActorsList() {
+        return allActorsList;
+    }
+
+    public void setAllActorsList(List<Actor> allActorsList) {
+        this.allActorsList = allActorsList;
+    }
 
     public String getTitle() {
         return title;

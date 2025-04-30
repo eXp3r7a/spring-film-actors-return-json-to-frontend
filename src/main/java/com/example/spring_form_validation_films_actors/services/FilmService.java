@@ -1,6 +1,7 @@
 package com.example.spring_form_validation_films_actors.services;
 
 import com.example.spring_form_validation_films_actors.dto.FilmDTO;
+import com.example.spring_form_validation_films_actors.dto.ResponseMessage;
 import com.example.spring_form_validation_films_actors.entities.Actor;
 import com.example.spring_form_validation_films_actors.entities.Film;
 import com.example.spring_form_validation_films_actors.mappers.FilmMapper;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.List;
 
 @Service
 public class FilmService {
@@ -27,42 +30,35 @@ public class FilmService {
         this.filmRepository = filmRepository;
     }
 
-    public String addFilmForm(Model model){
+    public FilmDTO addFilmForm(){
         FilmDTO filmDTO = new FilmDTO();
         for (int i = 0; i < 4; i++) {
             filmDTO.getActors().add(new Actor());
         }
-        model.addAttribute("film", filmDTO);
-        model.addAttribute("actors", actorRepository.findAll());
-
-        return "films/add_form";
+        filmDTO.setAllActorsList(actorRepository.findAll());
+        return filmDTO;
     }
 
-    public String submitFilmToDB(@ModelAttribute @Valid FilmDTO filmDTO, BindingResult bindingResult, Model model){
+    public ResponseMessage submitFilmToDB(@ModelAttribute @Valid FilmDTO filmDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            model.addAttribute("film", filmDTO);
-            model.addAttribute("actors", actorRepository.findAll());
-
-            return "films/add_form";
+            addFilmForm();
         }
 
         if(!compareTitles(filmDTO.getTitle(),filmDTO.getTitleChecker())){
-            model.addAttribute("film", filmDTO);
-            model.addAttribute("actors", actorRepository.findAll());
-            model.addAttribute("titleCheckerError", "Title is not equal. Please validate title!");
-
-            return "films/add_form";
+            //model.addAttribute("titleCheckerError", "Title is not equal. Please validate title!");
+            addFilmForm();
         }
 
         Film film = filmMapper.toEntity(filmDTO);
         filmRepository.save(film);
-        return "redirect:/results";
+
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setMessage("Film is successfully saved!");
+        return responseMessage;
     }
 
-    public String getAllFilms(Model model){
-        model.addAttribute("films", filmRepository.findAll());
-
-        return "films/get_films";
+    public List<Film> getAllFilms(){
+        return filmRepository.findAll();
     }
 
     private boolean compareTitles(String title, String titleChecker){
